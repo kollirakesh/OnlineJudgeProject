@@ -11,13 +11,16 @@ if (!fs.existsSync(dirCodes)) {
 const generateFile = async (language, code) => {
     const jobId = uuid();
     let filename;
+    let finalCode = code;
     if (language === 'java') {
         filename = `Main.java`;
+        // Replace any public class name with Main
+        finalCode = code.replace(/public\s+class\s+\w+/g, 'public class Main');
     } else {
         filename = `${jobId}.${language}`;
     }
     const filepath = path.join(dirCodes, filename);
-    fs.writeFileSync(filepath, code);
+    fs.writeFileSync(filepath, finalCode);
     return filepath;
 };
 
